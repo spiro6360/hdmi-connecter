@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>HDMI 연결 도우미 — TV 연결 문제 즉시 해결</title>
+<style>
+:root{
+  --bg:#0d1117;--card:#161b22;--card2:#1c2128;--border:#30363d;
+  --green:#3fb950;--blue:#58a6ff;--cyan:#4ecca3;--yellow:#e3b341;
+  --red:#f85149;--text:#e6edf3;--muted:#8b949e;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Malgun Gothic",sans-serif;
+  background:var(--bg);color:var(--text);line-height:1.6}
+
+/* NAV */
+nav{position:sticky;top:0;z-index:100;background:rgba(13,17,23,.93);
+  backdrop-filter:blur(12px);border-bottom:1px solid var(--border);
+  padding:13px 36px;display:flex;align-items:center;justify-content:space-between}
+.nav-logo{font-size:1rem;font-weight:700;color:var(--cyan);
+  display:flex;align-items:center;gap:10px}
+.nav-dot{width:9px;height:9px;background:var(--green);border-radius:50%;
+  animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(63,185,80,.4)}
+  50%{box-shadow:0 0 0 8px rgba(63,185,80,0)}}
+.nav-tag{background:#238636;color:#fff;font-size:.72rem;
+  padding:3px 11px;border-radius:20px}
+
+/* HERO */
+.hero{text-align:center;padding:90px 20px 70px;
+  background:radial-gradient(ellipse 80% 50% at 50% 0%,
+    rgba(78,204,163,.07) 0%,transparent 70%)}
+.hero-chip{display:inline-block;background:rgba(78,204,163,.1);
+  color:var(--cyan);border:1px solid rgba(78,204,163,.25);
+  font-size:.78rem;padding:5px 16px;border-radius:20px;margin-bottom:22px}
+.hero h1{font-size:clamp(1.9rem,5vw,3.2rem);font-weight:800;
+  line-height:1.2;margin-bottom:18px}
+.hero h1 span{color:var(--cyan)}
+.hero p{font-size:1.05rem;color:var(--muted);
+  max-width:520px;margin:0 auto 36px}
+.btns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+.btn-dl{display:inline-flex;align-items:center;gap:9px;
+  background:var(--cyan);color:#0d1117;font-size:1rem;font-weight:700;
+  padding:13px 30px;border-radius:10px;text-decoration:none;
+  transition:all .2s;box-shadow:0 0 28px rgba(78,204,163,.2)}
+.btn-dl:hover{background:#3dbd94;transform:translateY(-2px);
+  box-shadow:0 0 40px rgba(78,204,163,.38)}
+.hero-checks{margin-top:22px;font-size:.82rem;color:var(--muted);
+  display:flex;justify-content:center;gap:18px;flex-wrap:wrap}
+.hero-checks span::before{content:"✓ ";color:var(--green)}
+
+/* MOCKUP */
+.mock-wrap{max-width:660px;margin:56px auto 0;padding:0 20px}
+.mock{background:var(--card);border:1px solid var(--border);
+  border-radius:13px;overflow:hidden;
+  box-shadow:0 20px 60px rgba(0,0,0,.5)}
+.mock-bar{background:#21262d;padding:9px 14px;
+  display:flex;align-items:center;gap:7px}
+.mock-bar .d{width:11px;height:11px;border-radius:50%}
+.mock-bar span{margin-left:6px;font-size:.78rem;color:var(--muted)}
+.mock-body{padding:20px}
+.s-box{background:rgba(248,81,73,.07);border:1px solid rgba(248,81,73,.22);
+  border-radius:9px;padding:18px;text-align:center;margin-bottom:14px}
+.s-box.ok{background:rgba(63,185,80,.07);border-color:rgba(63,185,80,.22)}
+.s-icon{font-size:2.2rem}
+.s-title{font-size:.95rem;font-weight:700;margin-top:6px;color:var(--red)}
+.s-box.ok .s-title{color:var(--green)}
+.s-sub{font-size:.8rem;color:var(--muted);margin-top:3px}
+.diag{background:var(--card2);border-radius:7px;
+  padding:12px 14px;margin-bottom:14px;font-size:.82rem}
+.diag-lbl{color:var(--yellow);font-weight:600;margin-bottom:7px}
+.diag-item{color:var(--muted);padding:2px 0}
+.diag-item::before{content:"→ ";color:var(--cyan)}
+.btn-grid{display:grid;grid-template-columns:1fr 1fr;gap:7px}
+.mb{background:var(--card2);border:1px solid var(--border);
+  border-radius:7px;padding:11px;text-align:center}
+.mb .ml{font-size:.88rem;font-weight:700}
+.mb .ms{font-size:.7rem;color:var(--muted);margin-top:2px}
+.c1 .ml{color:var(--cyan)} .c2 .ml{color:var(--blue)}
+.c3 .ml{color:var(--yellow)} .c4 .ml{color:var(--red)}
+
+/* SECTIONS */
+section{padding:72px 20px;max-width:1080px;margin:0 auto}
+.sec-lbl{text-align:center;font-size:.78rem;color:var(--cyan);
+  font-weight:600;letter-spacing:.1em;text-transform:uppercase;
+  margin-bottom:10px}
+.sec-title{text-align:center;font-size:clamp(1.4rem,3vw,2rem);
+  font-weight:800;margin-bottom:44px}
+
+/* FEATURES */
+.feat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:18px}
+.feat{background:var(--card);border:1px solid var(--border);
+  border-radius:11px;padding:26px;transition:.2s}
+.feat:hover{border-color:var(--cyan);transform:translateY(-3px)}
+.feat-ic{font-size:1.9rem;margin-bottom:12px}
+.feat-t{font-size:1rem;font-weight:700;margin-bottom:7px}
+.feat-d{font-size:.88rem;color:var(--muted)}
+
+/* STEPS */
+.steps-wrap{background:var(--card);border-radius:14px;padding:44px 36px}
+.steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+  gap:28px;margin-top:36px}
+.step{text-align:center}
+.step-n{width:44px;height:44px;background:rgba(78,204,163,.12);
+  border:2px solid var(--cyan);border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:1.1rem;font-weight:800;color:var(--cyan);margin:0 auto 12px}
+.step-t{font-size:.9rem;font-weight:700;margin-bottom:5px}
+.step-d{font-size:.82rem;color:var(--muted)}
+.step-arr{display:flex;align-items:center;justify-content:center;
+  color:var(--border);font-size:1.4rem;padding-top:18px}
+
+/* KEYS */
+.keys{display:flex;flex-wrap:wrap;justify-content:center;gap:12px;margin-top:30px}
+.key{background:var(--card);border:1px solid var(--border);
+  border-radius:8px;padding:10px 20px;font-size:.88rem;
+  display:flex;align-items:center;gap:10px}
+.key kbd{background:var(--card2);border:1px solid var(--border);
+  border-radius:5px;padding:2px 9px;font-size:.82rem;
+  font-family:monospace;color:var(--cyan)}
+
+/* CTA */
+.cta{text-align:center;
+  background:linear-gradient(135deg,rgba(78,204,163,.07),rgba(88,166,255,.07));
+  border:1px solid var(--border);border-radius:18px;
+  padding:64px 28px;margin:0 20px 72px;
+  max-width:1040px;margin-left:auto;margin-right:auto}
+.cta h2{font-size:clamp(1.4rem,3vw,2rem);margin-bottom:12px}
+.cta p{color:var(--muted);margin-bottom:32px}
+.file-meta{display:flex;justify-content:center;gap:24px;flex-wrap:wrap;
+  margin-top:20px;font-size:.82rem;color:var(--muted)}
+.file-meta b{color:var(--text)}
+
+footer{border-top:1px solid var(--border);padding:26px 36px;
+  text-align:center;font-size:.82rem;color:var(--muted)}
+
+/* FADE IN */
+.fi{opacity:0;transform:translateY(18px);transition:.55s ease}
+.fi.on{opacity:1;transform:none}
+
+@media(max-width:600px){
+  nav{padding:11px 14px} .hero{padding:64px 14px 52px}
+  .steps-wrap{padding:28px 18px} .step-arr{display:none}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo"><div class="nav-dot"></div>HDMI 연결 도우미</div>
+  <span class="nav-tag">무료 배포</span>
+</nav>
+
+<div class="hero">
+  <div class="hero-chip">Windows 10 / 11 · 무료 · 설치 간편</div>
+  <h1>HDMI 연결 문제<br/><span>한 번에 해결</span></h1>
+  <p>수업 중 TV에 화면이 안 뜰 때, 버튼 하나로 즉시 해결.<br/>
+     원인 진단부터 연결 모드 변경까지 자동으로.</p>
+  <div class="btns">
+    <a class="btn-dl" href="HDMI연결도우미.zip" download id="dl-btn">
+      ⬇&nbsp; 무료 다운로드
+    </a>
+  </div>
+  <div class="hero-checks">
+    <span>Python 설치 불필요</span>
+    <span>Windows 10 / 11</span>
+    <span>전체화면 지원</span>
+    <span>약 11 MB</span>
+  </div>
+</div>
+
+<!-- mockup -->
+<div class="mock-wrap fi">
+  <div class="mock">
+    <div class="mock-bar">
+      <div class="d" style="background:#f85149"></div>
+      <div class="d" style="background:#e3b341"></div>
+      <div class="d" style="background:#3fb950"></div>
+      <span>HDMI 연결 도우미</span>
+    </div>
+    <div class="mock-body">
+      <div class="s-box">
+        <div class="s-icon">❌</div>
+        <div class="s-title">외부 디스플레이 감지 안됨</div>
+        <div class="s-sub">TV/모니터가 연결되지 않았습니다. 아래 해결 방법을 따라 진행하세요.</div>
+      </div>
+      <div class="diag">
+        <div class="diag-lbl">⚠ 진단 결과 및 해결 방법</div>
+        <div class="diag-item">HDMI 케이블이 양쪽에 단단히 꽂혀 있는지 확인하세요</div>
+        <div class="diag-item">TV 입력 소스를 HDMI로 변경하세요 (리모컨 → 소스 버튼)</div>
+        <div class="diag-item">케이블을 뽑았다가 5초 후 다시 꽂아보세요</div>
+      </div>
+      <div class="btn-grid">
+        <div class="mb c1"><div class="ml">화면 복제</div><div class="ms">수업용 추천 [1]</div></div>
+        <div class="mb c2"><div class="ml">화면 확장</div><div class="ms">발표용 [2]</div></div>
+        <div class="mb c3"><div class="ml">TV만 표시</div><div class="ms">프레젠테이션 [3]</div></div>
+        <div class="mb c4"><div class="ml">노트북만</div><div class="ms">연결 끊기 [4]</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- features -->
+<section class="fi">
+  <div class="sec-lbl">Features</div>
+  <div class="sec-title">이런 기능이 있어요</div>
+  <div class="feat-grid">
+    <div class="feat"><div class="feat-ic">🔍</div>
+      <div class="feat-t">자동 연결 상태 진단</div>
+      <div class="feat-d">실행 즉시 디스플레이를 감지하고, 연결이 안 되면 원인과 해결 방법을 화면에 바로 안내합니다. 5초마다 자동 갱신.</div></div>
+    <div class="feat"><div class="feat-ic">🖱</div>
+      <div class="feat-t">버튼 하나로 즉시 연결</div>
+      <div class="feat-d">화면 복제·확장·TV만·노트북만, 4가지 모드를 클릭 또는 숫자키 1~4로 즉시 적용.</div></div>
+    <div class="feat"><div class="feat-ic">⛶</div>
+      <div class="feat-t">전체화면 지원</div>
+      <div class="feat-d">F11로 전체화면 전환. 어떤 화면 비율에서도 모든 옵션이 잘리지 않고 표시됩니다.</div></div>
+    <div class="feat"><div class="feat-ic">📋</div>
+      <div class="feat-t">단계별 해결 가이드</div>
+      <div class="feat-d">케이블 확인, TV 입력 소스 변경, 드라이버 재시작 등 단계별 해결 방법을 실시간 안내.</div></div>
+    <div class="feat"><div class="feat-ic">⚡</div>
+      <div class="feat-t">설치 없이 바로 실행</div>
+      <div class="feat-d">Python, 드라이버 등 별도 설치 불필요. ZIP 압축 해제 후 .exe 더블클릭으로 바로 실행.</div></div>
+    <div class="feat"><div class="feat-ic">🎓</div>
+      <div class="feat-t">교실 수업 최적화</div>
+      <div class="feat-d">선생님 노트북 ↔ 학급 TV 연결이 끊겼을 때를 위해 만들었습니다. 10초 안에 해결.</div></div>
+  </div>
+</section>
+
+<!-- steps -->
+<section style="padding-top:0">
+  <div class="steps-wrap fi">
+    <div class="sec-lbl" style="text-align:center">How to use</div>
+    <div class="sec-title" style="margin-bottom:0">딱 3단계</div>
+    <div class="steps">
+      <div class="step">
+        <div class="step-n">1</div>
+        <div class="step-t">ZIP 다운로드</div>
+        <div class="step-d">위 버튼으로 ZIP 파일 저장</div>
+      </div>
+      <div class="step-arr">→</div>
+      <div class="step">
+        <div class="step-n">2</div>
+        <div class="step-t">압축 해제</div>
+        <div class="step-d">폴더에 압축 풀고<br/><b>바탕화면_바로가기_만들기.bat</b> 실행</div>
+      </div>
+      <div class="step-arr">→</div>
+      <div class="step">
+        <div class="step-n">3</div>
+        <div class="step-t">아이콘 클릭</div>
+        <div class="step-d">바탕화면 아이콘 더블클릭으로 언제든 실행</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- shortcuts -->
+<section class="fi" style="padding-top:0;text-align:center">
+  <div class="sec-lbl">Shortcuts</div>
+  <div class="sec-title">단축키</div>
+  <div class="keys">
+    <div class="key"><kbd>F11</kbd> 전체화면 ON / OFF</div>
+    <div class="key"><kbd>Esc</kbd> 전체화면 해제</div>
+    <div class="key"><kbd>F5</kbd> 상태 새로고침</div>
+    <div class="key"><kbd>1</kbd> 화면 복제</div>
+    <div class="key"><kbd>2</kbd> 화면 확장</div>
+    <div class="key"><kbd>3</kbd> TV만 표시</div>
+    <div class="key"><kbd>4</kbd> 노트북만</div>
+    <div class="key"><kbd>Win</kbd>+<kbd>P</kbd> 윈도우 기본 설정</div>
+  </div>
+</section>
+
+<!-- cta -->
+<div class="cta fi">
+  <h2>지금 바로 무료로 받아가세요</h2>
+  <p>수업 시간에 HDMI 때문에 당황하지 마세요.</p>
+  <div class="btns">
+    <a class="btn-dl" href="HDMI연결도우미.zip" download>⬇&nbsp; HDMI 연결 도우미 다운로드</a>
+  </div>
+  <div class="file-meta">
+    <span>크기: <b>약 11 MB</b></span>
+    <span>버전: <b>v1.0</b></span>
+    <span>OS: <b>Windows 10 / 11 (64bit)</b></span>
+    <span>라이선스: <b>무료</b></span>
+  </div>
+</div>
+
+<footer>
+  HDMI 연결 도우미 · Windows 전용 · 교육 현장을 위해 만들었습니다
+</footer>
+
+<script>
+const io = new IntersectionObserver(entries=>{
+  entries.forEach(e=>{ if(e.isIntersecting){e.target.classList.add('on');io.unobserve(e.target)} })
+},{threshold:.08});
+document.querySelectorAll('.fi').forEach(el=>io.observe(el));
+
+document.querySelectorAll('.btn-dl').forEach(b=>{
+  b.addEventListener('click',function(){
+    const t=this.innerHTML;
+    this.innerHTML='✓&nbsp; 다운로드 시작!';
+    this.style.background='#3fb950';
+    setTimeout(()=>{this.innerHTML=t;this.style.background=''},3000);
+  });
+});
+</script>
+</body>
+</html>
